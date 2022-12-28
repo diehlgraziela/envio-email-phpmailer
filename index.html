@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>teste envio email</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+</head>
+
+<body>
+    <form id="form">
+        <input type="text" name="nome" placeholder="Nome completo">
+        <input type="email" name="email" placeholder="Email">
+        <button id="btnEnviar">Enviar</button>
+    </form>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+    <script>
+        (function ($) {
+            "use strict";
+
+            var form = $('#form'); // contact form
+
+            // form submit event
+            form.on('submit', function (e) {
+                e.preventDefault(); // prevent default form submit
+
+                var dataparam = $('#form').serialize();
+
+                $.ajax({
+                    url: 'enviarEmail.php', // form action url
+                    type: 'POST', // form submit method get/post
+                    dataType: 'html', // request type html/json/xml
+                    data: dataparam, // serialize form data
+                    beforeSend: function () {
+                        $('#btnEnviar').html(
+                            '<i class="fas fa-spinner fa-spin"></i> Enviando...'
+                        );
+                    },
+                    success: function (data) {
+                        form.trigger('reset'); // reset form
+                    },
+                    complete: function () {
+                        $('#btnEnviar').html(
+                            '<i class="fa-solid fa-check"></i> Email enviado'
+                        );
+                    },
+                    error: function (e) {
+                        $('#btnEnviar').html(
+                            '<i class="fa-solid fa-circle-exclamation"></i> Algo deu errado'
+                        );
+                    }
+                });
+            });
+        })(jQuery);  
+    </script>
+</body>
+
+</html>
